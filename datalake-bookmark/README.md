@@ -6,6 +6,10 @@ Author @nicanand
 ## 1. Data source to Raw Glue job
 - Job name: `sqlserver12-items-native-bookmark-script.py`
 - Bookmark is enabled
+  - Add the following line:
+  ```
+  additional_options = {"jobBookmarkKeys":["updated_date"],"jobBookmarkKeysSortOrder":"asc"},
+  ```
 
 ## 2. Raw to transformed Glue Job Config
 - Job name: `sqlserver12-items-iceberg-transformed.py`
