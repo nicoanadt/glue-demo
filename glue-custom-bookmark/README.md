@@ -13,5 +13,5 @@ DynamoDB table:
 | where_clause | `item_id>'{bookmark_1_val}'` | Where clause as filter query for bookmark. Use `{bookmark_1_val}` and `{bookmark_2_val}` respectively when required. Use quote `'` for string value. |
 | bookmark\_1\_col | `item_id` | Column name for bookmark. |
 | bookmark\_1\_val | \[empty\] | Keep empty for initial load. Will be updated in each run |
-| bookmark\_2\_col | `updated_ts` | Column name for bookmark.<br>OPTIONAL. Create only when required. |
+| bookmark\_2\_col | `updated_ts` | OPTIONAL. Create only when required.<br>Column name for bookmark. |
 | bookmark\_2\_val | \[empty\] | OPTIONAL. Create only when required. Keep empty for initial load. Will be updated in each run |
