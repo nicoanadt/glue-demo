@@ -25,3 +25,8 @@
 | bookmark\_1\_val | \[empty\] | Keep empty for initial load. Will be updated in each run |
 | bookmark\_2\_col | `updated_ts` | Column name for bookmark.<br>OPTIONAL. Create only when required. |
 | bookmark\_2\_val | \[empty\] | OPTIONAL. Create only when required. Keep empty for initial load. Will be updated in each run |
+
+
+### Note:
+
+- For timestamp column, adjust the `where_clause` as required based value in the `bookmark_val`. For example, in SQL Server the `bookmark_val` format is `2022-07-21 22:29:43.50000` while they only accept datetime format like this `2022-07-21 22:29:43.500`. To resolve this we need to trim the last 2 character using the following `where_clause`: `ts>LEFT('2022-07-21 22:29:43.50000', CHARINDEX('.', '2022-07-21 22:29:43.50000') + 2)`
