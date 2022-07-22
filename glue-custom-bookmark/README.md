@@ -29,7 +29,12 @@
 
 ### Note:
 
-- For timestamp column, adjust the `where_clause` as required based value in the `bookmark_val`. For example, in SQL Server the `bookmark_val` format is `2022-07-21 22:29:43.50000` while they only accept datetime format like this `2022-07-21 22:29:43.500`. To resolve this we need to trim the last 2 character using the following `where_clause`:
-    ```
-    ts>LEFT('{bookmark_1_val}', CHARINDEX('.', '{bookmark_1_val}') + 2)
-    ```
+- For timestamp column, adjust the `where_clause` as required based value in the `bookmark_val`. 
+    - For example, in SQL Server the `bookmark_val` format is `2022-07-21 22:29:43.50000` while they only accept datetime format like this `2022-07-21 22:29:43.500`. To resolve this we need to trim the last 2 character using the following `where_clause`:
+        ```
+        ts>LEFT('{bookmark_1_val}', CHARINDEX('.', '{bookmark_1_val}') + 2)
+        ```
+    - Another example in Postgres we only need the following `where_clause` for the same timestamp string `2022-07-21 22:29:43.50000`:
+        ```
+        ts>to_timestamp('{bookmark_1_val}', 'YYYY-MM-DD HH24:MI:SS.US')
+        ```
