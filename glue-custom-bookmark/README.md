@@ -1,6 +1,16 @@
 # Glue Custom Bookmark
 
-DynamoDB table:
+### How to use
+
+1. Create DynamoDB table `glue_bookmark` and setup an table entry
+2. Set glue job variable  `ddb_table_id` with the `table_id` of DynamoDB
+3. Set table schema in glue job (in `ApplyMapping`)
+4. Set target in glue job:
+  - `path` : s3 target
+  - `catalogDatabase` : target glue database
+  - `catalogTableName` : target glue table
+
+### DynamoDB table:
 - Table name: `glue_bookmark`
 
 | Key | Example Value | Description |
