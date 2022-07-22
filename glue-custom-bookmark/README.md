@@ -10,8 +10,8 @@ DynamoDB table:
 | connection_name | `sqlserver12-2` | Connection name for custom JDBC connection in Glue. (Connection, not connector) |
 | db_name | `data_db` | Database name in source database |
 | table_name | `dbo.items` | Table name in source database |
-| where_clause | `item_id>'{bookmark_1_val}'` | Where clause as filter query for bookmark. Use `{bookmark_1_val}` and `{bookmark_2_val}` respectively when required. Use quote `'` for string value. |
+| where_clause | `item_id>'{bookmark_1_val}'`<br><br>or<br><br>`item_id>'{bookmark_1_val}' and updated_ts>'{bookmark_2_val}'` | Where clause as filter query for bookmark. Use {bookmark\_1\_val} and {bookmark\_2\_val} respectively when required. Use quote `'` for string value. |
 | bookmark\_1\_col | `item_id` | Column name for bookmark. |
 | bookmark\_1\_val | \[empty\] | Keep empty for initial load. Will be updated in each run |
-| bookmark\_2\_col | `updated_ts` | OPTIONAL. Create only when required.<br>Column name for bookmark. |
+| bookmark\_2\_col | `updated_ts` | Column name for bookmark.<br>OPTIONAL. Create only when required. |
 | bookmark\_2\_val | \[empty\] | OPTIONAL. Create only when required. Keep empty for initial load. Will be updated in each run |
