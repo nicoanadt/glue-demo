@@ -162,12 +162,15 @@ if Databasetable_node1.count()>0:
         new_bookmark = get_max_value_dyf(Databasetable_node1, v_bookmark_2_col)
         print('new_bookmark_2', new_bookmark)
         ### Update bookmark in ddb
-        update_attribute(dynamodb, 'glue_bookmark', 'table_id', ddb_table_id, 'bookmark_2_val', new_bookmark)
+        if new_bookmark:
+            update_attribute(dynamodb, 'glue_bookmark', 'table_id', ddb_table_id, 'bookmark_2_val', new_bookmark)
     
     ### Get latest value and assign to bookmark 1
     new_bookmark = get_max_value_dyf(Databasetable_node1, v_bookmark_1_col)
     print('new_bookmark_1', new_bookmark)
-    update_attribute(dynamodb, 'glue_bookmark', 'table_id', ddb_table_id, 'bookmark_1_val', new_bookmark)
+    if new_bookmark:
+        update_attribute(dynamodb, 'glue_bookmark', 'table_id', ddb_table_id, 'bookmark_1_val', new_bookmark)
+
 
 
 
