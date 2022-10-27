@@ -67,7 +67,7 @@ def sparkSqlQuery(glueContext, query, mapping, transformation_ctx) -> DynamicFra
     return DynamicFrame.fromDF(result, glueContext, transformation_ctx)
 
 ### SETUP JOB TABLE_ID OF DYNAMODB
-ddb_table_id = 'sqlserver_data_dbo_test_col1'
+ddb_table_id = 'sqlserver_data_dbo_test'
 
 ### Get data source information from DynamoDB
 ddb_bookmark = query_table(dynamodb, 'glue_bookmark', 'table_id', ddb_table_id)
