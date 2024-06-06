@@ -34,7 +34,7 @@ def MyTransform (glueContext, dfc) -> DynamicFrameCollection:
     
     ## Step 2. Transform Dynamicframe into dataframe
     
-    df = dfc.select(list(dfc.keys())[0]).toDF()
+    df = dfc.select(list(dfc.keys())[0]).toDF().repartition(2)
     
     ## Step 3. Create INSERT statement
     
