@@ -7,7 +7,7 @@ def MyTransform (glueContext, dfc) -> DynamicFrameCollection:
     import json
     
     ## Step 1. Fetch the database connection details from AWS Secrets Manager
-    secret_name = "lakehouse/postgres"
+    secret_name = "<secret-name>"
     region_name = "ap-southeast-1"
     
     session = boto3.session.Session()
