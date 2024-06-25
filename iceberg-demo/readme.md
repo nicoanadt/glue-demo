@@ -13,7 +13,7 @@ Parameters:
 - Use lowest number of workers during testing to save cost
 - Job parameters:
   - `--datalake-formats` : `iceberg`
-  - `--iceberg_job_catalog_warehouse` : 's3://<s3_bucket>/<path>'
+  - `--iceberg_job_catalog_warehouse` : `s3://<s3_bucket>/<path>`
 
 
 ## 2. Athena Iceberg table for Transformed layer
