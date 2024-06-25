@@ -4,7 +4,8 @@ This is a repository created to showcase Iceberg capability in Glue for demo pur
 
 ## 1. Glue job for Iceberg
 
-This glue is to transform data from Raw layer to Transformed layer
+This glue job is to transform data from Raw layer to Transformed layer: `Employee_CDC_RawToTrf_Iceberg.py`
+Incoming data is assumed coming from DMS CDC table.
 
 Parameters:
 - Glue 4.0
