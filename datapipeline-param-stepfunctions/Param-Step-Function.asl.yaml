@@ -1,0 +1,90 @@
+QueryLanguage: JSONata
+Comment: A description of my state machine
+StartAt: Lambda Generate Param
+States:
+  Lambda Generate Param:
+    Type: Task
+    Resource: arn:aws:states:::lambda:invoke
+    Output: '{% $states.result.Payload %}'
+    Arguments:
+      FunctionName: >-
+        arn:aws:lambda:ap-southeast-1:[aws-account-id]:function:generate-param-lambda:$LATEST
+      Payload: '{% $states.input %}'
+    Retry:
+      - ErrorEquals:
+          - Lambda.ServiceException
+          - Lambda.AWSLambdaException
+          - Lambda.SdkClientException
+          - Lambda.TooManyRequestsException
+        IntervalSeconds: 1
+        MaxAttempts: 3
+        BackoffRate: 2
+        JitterStrategy: FULL
+    Next: Glue Start Python Job
+  Glue Start Python Job:
+    Type: Task
+    Resource: arn:aws:states:::glue:startJobRun.sync
+    Arguments:
+      JobName: job-python-param
+      Arguments:
+        '--job_id': '{% $states.input.job_id %}'
+    Next: Glue Start Spark Job
+    Output:
+      job_id: '{% $states.input.job_id %}'
+  Glue Start Spark Job:
+    Type: Task
+    Resource: arn:aws:states:::glue:startJobRun.sync
+    Arguments:
+      JobName: job-spark-param
+      Arguments:
+        '--job_id': '{% $states.input.job_id %}'
+    Next: ExecuteStatement
+    Output:
+      job_id: '{% $states.input.job_id %}'
+  ExecuteStatement:
+    Type: Task
+    Arguments:
+      Database: dev
+      Sql: select :job_id as job_id,current_user
+      SecretArn: >-
+        arn:aws:secretsmanager:ap-southeast-1:[aws-account-id]:secret:[secret-name]
+      ClusterIdentifier: lakehouse-redshift-cluster
+      Parameters:
+        - Name: job_id
+          Value: '{% $states.input.job_id %}'
+    Resource: arn:aws:states:::aws-sdk:redshiftdata:executeStatement
+    Next: Wait
+    Output:
+      job_id: '{% $states.input.job_id %}'
+      QueryId: '{% $states.result.Id %}'
+  Wait:
+    Type: Wait
+    Seconds: 5
+    Next: DescribeStatement
+    Output:
+      job_id: '{% $states.input.job_id %}'
+      QueryId: '{% $states.input.QueryId %}'
+  DescribeStatement:
+    Type: Task
+    Arguments:
+      Id: '{% $states.input.QueryId %}'
+    Resource: arn:aws:states:::aws-sdk:redshiftdata:describeStatement
+    Next: Choice
+    Output:
+      job_id: '{% $states.input.job_id %}'
+      QueryId: '{% $states.input.QueryId %}'
+      Status: '{% $states.result.Status %}'
+  Choice:
+    Type: Choice
+    Choices:
+      - Next: Success
+        Condition: '{% $states.input.Status = ''FINISHED'' %}'
+      - Next: Fail
+        Condition: >-
+          {% $states.input.Status = 'ABORTED' or $states.input.Status='FAILED'
+          %}
+    Default: Wait
+  Success:
+    Type: Succeed
+  Fail:
+    Type: Fail
